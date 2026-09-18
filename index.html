@@ -94,18 +94,18 @@ main{max-width:1220px;margin:0 auto;padding:26px 22px 70px}
 .shelves .binders{position:absolute;inset:14px 18px;display:grid;grid-template-rows:repeat(4,108px);row-gap:14px}
 .shelves .binders div{display:flex;gap:6px;align-items:end}
 .shelves .binders span{display:block;width:26px;background:#2F3033;border-radius:2px 2px 0 0;box-shadow:inset -3px 0 0 rgba(0,0,0,.25)}
-.box{position:absolute;left:50%;bottom:34px;width:300px;height:190px;margin-left:-150px}
-.box .body{position:absolute;inset:40px 0 0;background:linear-gradient(180deg,#B08F5F,#8E7148);border-radius:3px;box-shadow:0 20px 40px rgba(0,0,0,.5)}
-.box .body::before{content:"";position:absolute;left:0;right:0;top:48%;height:22px;background:rgba(236,220,160,.55)}
-.box .body b{position:absolute;right:22px;bottom:18px;font-family:var(--f-hand);font-weight:600;font-size:46px;color:#2A2118;transform:rotate(-4deg)}
-.box .body em{position:absolute;left:20px;bottom:22px;font-family:var(--f-hand);font-style:normal;font-size:21px;color:#3A2E20;opacity:.8}
-.box .lid{position:absolute;left:-8px;right:-8px;top:18px;height:34px;background:linear-gradient(180deg,#C2A06C,#9E7F52);border-radius:3px;transform-origin:10% 100%;transition:transform 1s cubic-bezier(.5,0,.2,1),opacity 1s}
-.box.open .lid{transform:translate(-40px,-70px) rotate(-24deg);opacity:.9}
-.box .peek{position:absolute;left:30px;right:30px;top:44px;height:30px;display:flex;gap:10px;opacity:0;transition:opacity .8s .5s}
-.box.open .peek{opacity:1}
-.box .peek i{flex:1;background:var(--paper);transform:translateY(-12px) rotate(-3deg)}
-.box .peek i:nth-child(2){background:#2E3F55;transform:translateY(-18px) rotate(4deg)}
-.box .peek i:nth-child(3){background:#1C1C1E;transform:translateY(-8px) rotate(-1deg)}
+.carton{position:absolute;left:50%;bottom:34px;width:300px;height:190px;margin-left:-150px}
+.carton .body{position:absolute;inset:40px 0 0;background:linear-gradient(180deg,#B08F5F,#8E7148);border-radius:3px;box-shadow:0 20px 40px rgba(0,0,0,.5)}
+.carton .body::before{content:"";position:absolute;left:0;right:0;top:48%;height:22px;background:rgba(236,220,160,.55)}
+.carton .body b{position:absolute;right:22px;bottom:18px;font-family:var(--f-hand);font-weight:600;font-size:46px;color:#2A2118;transform:rotate(-4deg)}
+.carton .body em{position:absolute;left:20px;bottom:22px;font-family:var(--f-hand);font-style:normal;font-size:21px;color:#3A2E20;opacity:.8}
+.carton .lid{position:absolute;left:-8px;right:-8px;top:18px;height:34px;background:linear-gradient(180deg,#C2A06C,#9E7F52);border-radius:3px;transform-origin:10% 100%;transition:transform 1s cubic-bezier(.5,0,.2,1),opacity 1s}
+.carton.open .lid{transform:translate(-40px,-70px) rotate(-24deg);opacity:.9}
+.carton .peek{position:absolute;left:30px;right:30px;top:44px;height:30px;display:flex;gap:10px;opacity:0;transition:opacity .8s .5s}
+.carton.open .peek{opacity:1}
+.carton .peek i{flex:1;background:var(--paper);transform:translateY(-12px) rotate(-3deg)}
+.carton .peek i:nth-child(2){background:#2E3F55;transform:translateY(-18px) rotate(4deg)}
+.carton .peek i:nth-child(3){background:#1C1C1E;transform:translateY(-8px) rotate(-1deg)}
 .dialog{display:grid;gap:14px}
 .line{font-family:var(--f-serif);font-size:21px;line-height:1.45;max-width:30ch}
 .line.appear{animation-duration:.6s}
@@ -625,7 +625,7 @@ textarea.notes{width:100%;min-height:90px;resize:vertical;background:var(--groun
 .lc-paper{background:#F6F4EE;color:#1A1A1A;padding:28px 30px;box-shadow:0 10px 22px rgba(0,0,0,.4);font-family:var(--f-mono);font-size:15px;line-height:1.8}
 .lc-paper p{margin:0}
 .lc-sign{margin-top:14px!important;text-align:right}
-.lc-margin{font-family:var(--f-hand);color:#2A3A6A;font-size:21px;margin-top:10px;transform:rotate(-1.5deg)}
+.lc-margin{font-family:var(--f-hand);color:#A9C0E6;font-size:21px;margin-top:10px;transform:rotate(-1.5deg)}
 .end-doc{max-width:460px;margin:16px auto 0;text-align:left}
 .notice{position:fixed;right:18px;bottom:18px;z-index:60;width:min(360px,calc(100vw - 36px));background:var(--panel);border:1px solid var(--amber);border-radius:8px;padding:14px 16px;display:grid;gap:10px;box-shadow:0 20px 50px rgba(0,0,0,.6);animation:appear .5s ease-out both}
 .notice .n-top{display:flex;justify-content:space-between;gap:8px}
@@ -696,6 +696,12 @@ textarea.notes{width:100%;min-height:90px;resize:vertical;background:var(--groun
 .qopt.lite:hover{border-color:#6C6152}
 .qopt.lite[aria-pressed="true"]{background:#2E4056;color:#F1ECE1;border-color:#2E4056}
 .notegrid{display:grid;gap:8px}
+.deck-note{color:var(--muted);font-size:12.5px;line-height:1.45;margin:10px 2px 0}
+/* доска: карточки прошлых эпизодов свёрнуты до заголовка */
+.card.dim{opacity:.5}
+.card.dim.ev{width:158px}
+.card.dim.ev .qt{display:none}
+.card.dim.ev .stamp{margin-top:2px}
 </style>
 </head>
 <body>
@@ -1297,6 +1303,7 @@ V16.EPISODES.e2 = {
     somovHouse:{
       type:'transcribe', mat:'somov1', title:'Сторона Б, фрагмент 1', audio:true, side:'Б',
       prompt:'Запиши отмеченную реплику Сомова — со всеми знаками препинания.',
+      note:'Это, наверное, тот самый «С.» из дневника: 26 апреля Лиза записывала интервью с Григорием Ильичом Сомовым.',
       text:'Я этот дом сорок лет знаю, и трещин тут отродясь не было.',
       key9:{},
       gaps:{ 5:{ skill:'16-granica', explain:'Две основы: «я знаю» и «трещин не было». Запятая нужна.', h3:'Здесь две основы: «я знаю» и «трещин не было» (безличная часть). Проверь знак между ними.' } },
@@ -1314,6 +1321,7 @@ V16.EPISODES.e2 = {
     somovLand:{
       type:'transcribe', mat:'somov2', title:'Сторона Б, фрагмент 2', audio:true, side:'Б',
       prompt:'Запиши ответ Сомова целиком.',
+      note:'Тот же голос, что и в первом фрагменте стороны Б.',
       text:'Аварийным его признали только после того, как кому-то понадобилась земля.',
       key9:{}, gaps:{},
       free:[3,5],                                       // запятая при «после того как» может стоять по-разному — не проверяем
@@ -1915,17 +1923,17 @@ V16.EPISODES.e4 = {
 
     essayLiza:{
       type:'marks', mat:'essayLiza', title:'Сочинение Лизы', tab:'Лиза Воронцова',
-      prompt:'Лиза пишет те же конструкции, что в письме. Проверь её запятые. Карандашный вопрос на полях поставила сама Лиза.',
+      prompt:'Лиза пишет те же конструкции, что в письме. Проверь её запятые.',
       labels:['Написано верно','Здесь ошибка'], itemLabel:'место', focusLabel:'Место',
       items:[
         { id:'z1', n:1, before:'Я хочу задавать вопросы', printed:'', after:'и слушать ответы.', need:false, skill:'16-lishnyaya',
           fixed:'Я хочу задавать вопросы и слушать ответы.',
           explain:'«Задавать» и «слушать» — однородные члены с одиночным И. Запятой нет — знак на месте.',
           h3:'«Задавать» и «слушать» — что хочет делать Лиза. Нужен ли знак между однородными членами?' },
-        { id:'z2', n:2, before:'Мне не страшно ошибаться', printed:',', pencil:'?', after:'и я не боюсь спорить.', need:true, skill:'16-granica',
+        { id:'z2', n:2, before:'Мне не страшно ошибаться', printed:',', after:'и я не боюсь спорить.', need:true, skill:'16-granica',
           fixed:'Мне не страшно ошибаться, и я не боюсь спорить.',
-          explain:'Две основы: «мне не страшно» и «я не боюсь». Запятая нужна. Лиза засомневалась, но поставила знак верно.',
-          h3:'Карандашный вопрос — сомнение Лизы, а не ошибка. Сколько здесь основ?' },
+          explain:'Две основы: «мне не страшно» и «я не боюсь». Запятая нужна — знак на месте.',
+          h3:'Сколько здесь грамматических основ?' },
         { id:'z3', n:3, before:'В журналистике важны факты', printed:'', after:'и никто не отменял проверку.', need:false, skill:'16-obshiy',
           fixed:'В журналистике важны факты и никто не отменял проверку.',
           explain:'«В журналистике» относится к обеим частям — общий второстепенный член. Запятая не нужна — знак на месте.',
@@ -2236,14 +2244,15 @@ V16.EPISODES.e5 = {
     fatThree:{
       type:'transcribe', mat:'fat3', title:'Отец · 3', audio:true, video:true,
       speaker:{ name:'Андрей Воронцов', role:'отец Лизы · второе интервью' },
-      prompt:'Запиши ответ отца — со всеми знаками. Сколько здесь предложений?',
+      prompt:'Отец отвечает двумя короткими предложениями — между ними слышна пауза. Запиши ответ со всеми знаками, в том числе в конце каждого предложения.',
       text:'Я знал, что она жива. Я просто не знал, где.',
       free:[1,8],
       tc:'00:01:12',
       cues:[
         { t:'host', text:'Вы знали, что Лиза жива?', ms:2200 },
         { t:'look', on:true }, { t:'wait', ms:3600, cap:'· долгая пауза ·' },
-        { t:'say', voice:'m', pitch:.7, rate:.86, text:'Я знал, что она жива.', pause:900, key:true },
+        { t:'say', voice:'m', pitch:.7, rate:.86, text:'Я знал, что она жива.', pause:700, key:true },
+        { t:'wait', ms:1400, cap:'· пауза ·' },
         { t:'say', voice:'m', pitch:.7, rate:.86, text:'Я просто не знал, где.', pause:900, key:true },
         { t:'look', on:false },
         { t:'say', voice:'m', pitch:.7, rate:.9, text:'Она пришла ночью. Двадцать минут на кухне. Забрала паспорт. Я пообещал молчать.', pause:600, cap:'Она пришла ночью. Двадцать минут на кухне. Забрала паспорт. Я пообещал молчать.', who:'Отец Лизы · автоматические субтитры' }
@@ -2559,7 +2568,7 @@ E.epFresh = () => ({ introStep:0, opened:{}, visited:{}, played:{}, facts:{ans:{
 E.fresh = function(){
   const S={ v:2, cur:V16.GAME.order[0], active:V16.GAME.order[0], view:"intro", param:null, eps:{}, mat:{}, archive:[], links:[], cardPos:{}, seenCards:{},
     fixAns:{}, fixDone:{}, flags:{}, notes:{}, found:{}, fired:{}, inbox:[], ui:{diaryEntry:null, tapeFrag:null, interviewFrag:null, browserPage:null, vypuskFocus:"all"},
-    archiveTab:"errors", archiveFilter:"all", board:{zoom:null, focus:"all"},
+    archiveTab:"errors", archiveFilter:"all", board:{zoom:null, focus:null},
     final:{ view:"build", claims:{}, decisions:{}, result:null, lawyer:null, attempts:0 } };
   V16.GAME.order.forEach(id=>{ S.eps[id]=E.epFresh(); Object.keys(V16.EPISODES[id].materials).forEach(k=>S.mat[k]={status:"none",answers:{},value:""}); });
   return S;
@@ -3188,7 +3197,7 @@ E.VIEWS.episodes = function(){
 function introVisual(I){
   if(I.visual==='phone'||I.visual==='memo'||I.visual==='meet') return `<div class="shelves phone-scene"><div class="phone"><div class="scr"><span class="mono">${({memo:'голосовая заметка',meet:'встреча · не под запись'})[I.visual]||'входящий вызов'}</span><b>${esc(I.speaker)}</b><span class="mono">${esc(I.place.split('·').pop().trim())}</span><div class="wave">${'<i></i>'.repeat(12)}</div></div></div></div>`;
   return `<div class="shelves"><div class="binders">${[0,1,2,3].map(r=>`<div>${Array.from({length:14},(_,i)=>`<span style="height:${60+((i*37+r*13)%40)}px;opacity:${.55+((i*7+r)%5)/10}"></span>`).join('')}</div>`).join('')}</div>
-      <div class="box" id="box"><div class="lid"></div><div class="peek"><i></i><i></i><i></i></div><div class="body"><em>${esc(I.boxNote)}</em><b>${esc(I.boxLabel)}</b></div></div></div>`;
+      <div class="carton" id="box"><div class="lid"></div><div class="peek"><i></i><i></i><i></i></div><div class="body"><em>${esc(I.boxNote)}</em><b>${esc(I.boxLabel)}</b></div></div></div>`;
 }
 E.VIEWS.intro = function(){
   const I=E.EP.intro, P=E.P(), step=P.introStep, all=step>=I.lines.length;
@@ -3433,6 +3442,7 @@ E.VIEWS.scene_tape = function(o){
     stage:(t,played)=>`<div class="deck" id="deck">
       <div class="deck-win"><div class="cass"><div class="lbl">НЕ СТИРАТЬ<small>сторона ${esc(t.side||'А')}</small></div><div class="reel l"></div><div class="reel r"></div></div></div>
       <div class="deck-row"><span class="counter" id="cnt">${esc(t.counter)}</span><div class="vu" id="vu">${'<i></i>'.repeat(9)}</div></div>
+      ${t.note?`<p class="mono deck-note">${esc(t.note)}</p>`:''}
       <div class="tcap" id="tcap">${played?'фрагмент прослушан':'нажми «Воспроизвести»'}</div>
       <div class="keys"><button class="key" id="kPlay">▶ Воспроизвести</button><button class="key" id="kKey" ${played?'':'disabled'}>⟲ Реплика ещё раз</button><button class="key" id="kSlow" aria-pressed="false">0,75×</button><button class="key" id="kStop">■ Стоп</button></div>
     </div>`,
@@ -3573,7 +3583,7 @@ const cardName = id => { const c=cardDef(id); return c.name||c.src; };
 let freshLink=-1, unbindBoard=null;
 function boardHeight(cards){ return Math.max(GB.minHeight, ...cards.map(({id})=>posOf(id)[1]+280)); }
 function boardUI(withNote){
-  const cards=allCards(); const seen=E.S.seenCards; const focus=E.S.board.focus||'all';
+  const cards=allCards(); const seen=E.S.seenCards; const focus=E.S.board.focus || E.EP.id;   // по умолчанию — карточки текущего эпизода, прошлые свёрнуты
   const eps=[...new Set(cards.map(x=>x.ep))];
   const html=cards.map(x=>{ const f=!seen[x.id]; seen[x.id]=1; return cardHTML(x,f, focus!=='all'&&x.ep!==focus); }).join('');
   E.save();
@@ -3584,7 +3594,7 @@ function boardUI(withNote){
       <div class="seg-tabs zoom"><button data-z="-" aria-label="Уменьшить">−</button><button data-z="fit">Вписать</button><button data-z="+" aria-label="Увеличить">+</button></div>
       <span class="mono" id="zoomVal"></span>
       ${eps.length>1?`<div class="seg-tabs"><button data-focus="all" aria-pressed="${focus==='all'}">Все карточки</button>${eps.map(ep=>`<button data-focus="${ep}" aria-pressed="${focus===ep}">Эпизод ${V16.EPISODES[ep].number}</button>`).join('')}</div>`:''}
-      <span class="mono tools-hint">тяни фон, чтобы двигать доску</span>
+      <span class="mono tools-hint">${focus==='all'?'тяни фон, чтобы двигать доску':'карточки прошлых эпизодов свёрнуты — нажми «Все карточки», чтобы раскрыть'}</span>
     </div>
     ${E.S.flags.boardHint?'':'<div class="board-hint appear" id="bHint"><span>Перетаскивай карточки, чтобы собрать доску по-своему. Нажми на две карточки, чтобы связать их.</span><button class="toggle" id="bHintX">понятно</button></div>'}
     <div class="board-view" id="bview"><div class="board-space" id="bspace"><div class="board" id="board" style="width:${GB.width}px;height:${boardHeight(cards)}px">
@@ -3602,7 +3612,7 @@ function applyZoom(){
 }
 function drawThreads(){
   const board=document.getElementById('board'); if(!board) return; const svg=document.getElementById('threads'), tags=document.getElementById('tags');
-  const focus=E.S.board.focus||'all';
+  const focus=E.S.board.focus || E.EP.id;
   const c=id=>{ const el=board.querySelector(`.card[data-id="${id}"]`); if(!el) return null; const p=posOf(id); return [p[0]+el.offsetWidth/2, p[1]+Math.min(46,el.offsetHeight/2)]; };
   let paths='',th='';
   svg.setAttribute('width',board.offsetWidth); svg.setAttribute('height',board.offsetHeight);
@@ -3619,6 +3629,12 @@ function drawThreads(){
 }
 window.addEventListener('resize',()=>{ drawThreads(); applyZoom(); });
 
+function scrollToFocus(){
+  const view=document.getElementById('bview'); if(!view) return;
+  const focus=E.S.board.focus || E.EP.id; if(focus==='all') return;
+  const ys=allCards().filter(x=>x.ep===focus).map(({id})=>posOf(id)[1]); if(!ys.length) return;
+  const z=E.S.board.zoom||1; view.scrollTop=Math.max(0, Math.min.apply(null,ys)*z-20);
+}
 function wireBoard(onChange, rerender){
   const view=document.getElementById('bview'), board=document.getElementById('board'); let sel=null;
   applyZoom();
@@ -3674,7 +3690,7 @@ function wireBoard(onChange, rerender){
   }
   board.querySelectorAll('.card').forEach(el=>el.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); clickCard(el); } }));
   board.addEventListener('click',e=>{ const t=e.target.closest('.tag'); if(!t) return; const L=E.S.links[+t.dataset.link]; openPop(L.a,L.b); });
-  requestAnimationFrame(()=>{ applyZoom(); drawThreads(); }); setTimeout(()=>{ applyZoom(); drawThreads(); },80);
+  requestAnimationFrame(()=>{ applyZoom(); drawThreads(); scrollToFocus(); }); setTimeout(()=>{ applyZoom(); drawThreads(); scrollToFocus(); },80);
 }
 /* Контрольные точки эпизода запускаются с доски: выводы → версия дела → завершение */
 E.checkpoint = function(){
