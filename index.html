@@ -3594,6 +3594,7 @@ function boardUI(withNote){
       <div class="seg-tabs zoom"><button data-z="-" aria-label="Уменьшить">−</button><button data-z="fit">Вписать</button><button data-z="+" aria-label="Увеличить">+</button></div>
       <span class="mono" id="zoomVal"></span>
       ${eps.length>1?`<div class="seg-tabs"><button data-focus="all" aria-pressed="${focus==='all'}">Все карточки</button>${eps.map(ep=>`<button data-focus="${ep}" aria-pressed="${focus===ep}">Эпизод ${V16.EPISODES[ep].number}</button>`).join('')}</div>`:''}
+      <button class="btn small ghost" id="tidy" title="Расставить карточки ровной сеткой">Разложить аккуратно</button>
       <span class="mono tools-hint">${focus==='all'?'тяни фон, чтобы двигать доску':'карточки прошлых эпизодов свёрнуты — нажми «Все карточки», чтобы раскрыть'}</span>
     </div>
     ${E.S.flags.boardHint?'':'<div class="board-hint appear" id="bHint"><span>Перетаскивай карточки, чтобы собрать доску по-своему. Нажми на две карточки, чтобы связать их.</span><button class="toggle" id="bHintX">понятно</button></div>'}
@@ -3629,6 +3630,17 @@ function drawThreads(){
 }
 window.addEventListener('resize',()=>{ drawThreads(); applyZoom(); });
 
+/* Разложить карточки эпизода ровной сеткой — каждая полоса остаётся на своей высоте */
+function tidyBoard(focus){
+  const list=allCards().filter(x=>focus==='all'||x.ep===focus); if(!list.length) return;
+  const byEp={}; list.forEach(x=>(byEp[x.ep]=byEp[x.ep]||[]).push(x));
+  const COLS=4, DX=340, DY=240;
+  Object.values(byEp).forEach(arr=>{
+    const base=Math.min.apply(null, arr.map(({id})=>cardDef(id).pos[1]));
+    arr.forEach((x,i)=>{ E.S.cardPos[x.id]=[40+(i%COLS)*DX, base+Math.floor(i/COLS)*DY]; });
+  });
+  E.save();
+}
 function scrollToFocus(){
   const view=document.getElementById('bview'); if(!view) return;
   const focus=E.S.board.focus || E.EP.id; if(focus==='all') return;
@@ -3642,6 +3654,7 @@ function wireBoard(onChange, rerender){
   document.querySelectorAll('[data-z]').forEach(b=>b.onclick=()=>{ const z=E.S.board.zoom||1;
     E.S.board.zoom = b.dataset.z==='fit' ? Math.max(.3,Math.min(1,(view.clientWidth-8)/GB.width)) : Math.max(.3, Math.min(1.4, z+(b.dataset.z==='+'?.1:-.1)));
     E.save(); applyZoom(); });
+  const td=document.getElementById('tidy'); if(td) td.onclick=()=>{ tidyBoard(E.S.board.focus || E.EP.id); rerender(); };
   document.querySelectorAll('[data-focus]').forEach(b=>b.onclick=()=>{ E.S.board.focus=b.dataset.focus; E.save(); rerender(); });
   view.addEventListener('wheel',e=>{ if(!e.ctrlKey) return; e.preventDefault(); E.S.board.zoom=Math.max(.3,Math.min(1.4,(E.S.board.zoom||1)-e.deltaY*.0015)); applyZoom(); },{passive:false});
   // перетаскивание карточек и панорамирование фона
