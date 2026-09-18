@@ -600,13 +600,14 @@ textarea.notes{width:100%;min-height:90px;resize:vertical;background:var(--groun
 .rowpick.done b{color:var(--ok)}
 .editpaper ol{margin:14px 0 0;padding-left:22px;display:grid;gap:14px;font-family:var(--f-serif);font-size:17px;line-height:1.6}
 .editpaper li.hl{background:rgba(227,163,60,.28);box-shadow:0 0 0 4px rgba(227,163,60,.28)}
-.redpen{color:#C0281C;font-weight:700;font-family:var(--f-hand);font-size:26px;line-height:0;padding:0 2px}
-.redpen.strike{text-decoration:line-through;text-decoration-thickness:3px}
+.redpen{color:#C0281C;font-weight:700;font-family:var(--f-hand);font-size:26px;line-height:0;padding:0 2px;position:relative;display:inline-block;min-width:.5em;margin:0 2px;text-align:center}
+.redpen.strike::after{content:"";position:absolute;left:-5px;right:-5px;top:0;height:2.5px;background:#C0281C;border-radius:2px;transform:rotate(-24deg)}
 .redpen.tick{font-size:20px;margin-left:6px}
 .margin-red{font-family:var(--f-hand);color:#C0281C;font-size:22px;margin-top:14px;transform:rotate(-2deg)}
 .scene.single{grid-template-columns:minmax(0,1fr)}
-.marker-paper .doctext{background:linear-gradient(transparent 12%,rgba(20,20,24,.82) 12% 88%,transparent 88%);background-size:100% 1.85em;color:#EDE6D6;padding:4px 8px;border-radius:2px}
-.marker-paper .doctext input.lt{background:rgba(255,255,255,.9);color:#8A2A1E}
+.marker-paper .doctext{background:#1A1A1E;color:#E8E1D2;padding:16px 18px;border-radius:3px;line-height:2.1;box-shadow:inset 0 0 22px rgba(0,0,0,.55)}
+.marker-paper .doctext .wd{background:rgba(255,255,255,.06);border-radius:3px}
+.marker-paper .doctext input.lt{background:rgba(255,255,255,.92);color:#8A2A1E;line-height:1.2;height:1.35em;vertical-align:-.2em}
 .marker-paper .doctext b{color:#9EE0A8!important}
 .compare{margin-top:10px;border:1px solid #DDD8CD;border-radius:6px;background:#fff;padding:12px 14px;overflow-x:auto}
 .compare h3{color:#1F2023;margin-bottom:8px}
@@ -690,6 +691,11 @@ textarea.notes{width:100%;min-height:90px;resize:vertical;background:var(--groun
   .things{gap:22px 10px}
   .thing .obj{transform:scale(.8)}
 }
+/* выбранный вариант в заданиях на светлой бумаге виден сразу */
+.qopt.lite{background:rgba(255,255,255,.55);color:var(--ink);border-color:#9C8F78}
+.qopt.lite:hover{border-color:#6C6152}
+.qopt.lite[aria-pressed="true"]{background:#2E4056;color:#F1ECE1;border-color:#2E4056}
+.notegrid{display:grid;gap:8px}
 </style>
 </head>
 <body>
@@ -976,7 +982,7 @@ V16.EPISODES.e1 = {
       text:'Лампочка загорелась, и запись пошла.',
       key9:{ 'загорелась':{ pos:[3], skill:'9-gar-gor', explain:'Корни -гар-/-гор-: без ударения пишется О — загорéлась; под ударением как слышим — загáр.', h3:'Где ударение в слове «загорелась»? Если корень безударный, какая гласная пишется в -гар-/-гор-?' } },
       gaps:{ 1:{ skill:'16-granica', explain:'Две основы: «лампочка загорелась» и «запись пошла». Общего второстепенного члена нет — запятая нужна.', h3:'Здесь две основы: «лампочка загорелась» и «запись пошла». Союз И соединяет части сложного предложения. Проверь знак между ними.' } },
-      counter:'004',
+      counter:'000',
       cues:[
         { t:'click' }, { t:'noise', ms:900, cap:'[ щелчок, шум плёнки ]' },
         { t:'say', voice:'f', text:'Двадцать шестое апреля.', pause:500, cap:'[ голос Лизы ]' },
@@ -1102,8 +1108,6 @@ Object.assign(V16.EPISODES.e1, {
       why:'Это прямо написано в дневнике.' },
     { id:'f2', st:'«Д.» из дневника — это Денис Кравцов.', src:'дневник · страница Лизы', fact:false,
       why:'В материалах только буква «Д.». Денис — одноклассник с подходящим инициалом, но совпадение ничего не доказывает.' },
-    { id:'f3', st:'«Шестнадцатый» — это человек.', src:'дневник · кассета', fact:false,
-      why:'Слово есть в дневнике и на кассете, но что оно значит, не говорит ни один материал.' },
     { id:'f4', st:'На кассете говорят, что «шестнадцатый» закрывают до конца месяца.', src:'кассета, фрагмент 2', fact:true,
       why:'Это прямо слышно на записи.' },
     { id:'f5', st:'Голоса на кассете связаны с исчезновением Лизы.', src:'кассета', fact:false,
@@ -1266,7 +1270,7 @@ V16.EPISODES.e2 = {
       text:'Дом №16 на улице Кирпичной построили в 1956 году[[k1]] и с тех пор в нём выросли три поколения жильцов.\n\nВесной во дворе цветёт старая яблоня[[k2]] и дети до сих пор играют под ней в прятки.\n\nБывший инженер-строитель Григорий Ильич Сомов живёт здесь сорок лет[[k3]] и помнит каждого соседа по имени. Здесь помнят[[k4]] и первые телевизоры[[k5]] и первые компьютеры.\n\nДом признали аварийным[[k6]] и жильцы уже ищут новые квартиры. Соседи не хотят уезжать[[k7]] и никто не понимает, что случилось с крепким домом.',
       slots:{
         k1:{ need:true,  skill:'16-granica',   explain:'Две основы: «построили» (неопределённо-личное) и «выросли поколения». Общего второстепенного члена нет: «в 1956 году» относится только к первой части. Запятая нужна.', h3:'Здесь две основы: «построили» и «выросли поколения». Относятся ли слова «в 1956 году» ко второй части?' },
-        k2:{ need:false, skill:'16-obshiy',    explain:'«Весной во дворе» относится к обеим частям — общий второстепенный член. Запятая не ставится.', h3:'Две основы: «цветёт яблоня» и «дети играют». Слова «весной во дворе» относятся к обеим. Нужен ли тогда знак?' },
+        k2:{ need:true,  skill:'16-granica',   explain:'Две основы: «цветёт яблоня» и «дети играют». Общего второстепенного члена здесь нет: «весной во дворе» относится только к первой части, а во второй своё время — «до сих пор». Запятая нужна.', h3:'Проверь, ко всему ли предложению относятся слова «весной во дворе». Что во второй части говорит о времени?' },
         k3:{ need:false, skill:'16-lishnyaya', explain:'«Живёт» и «помнит» — однородные сказуемые при подлежащем «Григорий Ильич Сомов». Запятая не нужна.', h3:'«Живёт» и «помнит» — два действия одного человека. Нужен ли знак между однородными сказуемыми с одиночным И?' },
         k4:{ need:false, skill:'16-povtor',    explain:'Перед первым И из повторяющихся запятая не ставится.', h3:'Это первое И в цепочке «и…, и…». Нужен ли знак перед первым повторяющимся союзом?' },
         k5:{ need:true,  skill:'16-povtor',    explain:'Однородные дополнения соединены повторяющимся союзом «и… и…» — между ними запятая нужна.', h3:'Союз И повторяется: «и первые телевизоры … и первые компьютеры». Нужен ли знак между однородными членами при повторяющемся союзе?' },
@@ -1643,10 +1647,10 @@ V16.EPISODES.e3 = {
           fixed:'Комиссия приходила в марте, и через неделю дом признали аварийным.',
           explain:'Две основы: «комиссия приходила» и «признали». «В марте» относится только к первой части. Запятая нужна: редактор ошибся, вычеркнув её.',
           h3:'Здесь две основы: «комиссия приходила» и «признали». Относятся ли слова «в марте» ко второй части?' },
-        { id:'e3', n:3, before:'В подъезде пахнет краской', printed:'', edit:'struck', after:'и на стенах висят старые фотографии.', need:false, skill:'16-obshiy',
-          fixed:'В подъезде пахнет краской и на стенах висят старые фотографии.',
-          explain:'«В подъезде» относится к обеим частям — общий второстепенный член. Запятая не нужна: редактор прав.',
-          h3:'Две основы: «пахнет» и «висят фотографии». Слова «в подъезде» относятся к обеим. Нужен ли знак?' },
+        { id:'e3', n:3, before:'В подъезде пахнет краской', printed:'', edit:'struck', after:'и на стенах висят старые фотографии.', need:true, skill:'16-granica',
+          fixed:'В подъезде пахнет краской, и на стенах висят старые фотографии.',
+          explain:'Две основы: «пахнет» и «висят фотографии». Общего второстепенного члена нет: у первой части своё обстоятельство «в подъезде», у второй — «на стенах». Запятая нужна: редактор ошибся, вычеркнув её.',
+          h3:'У каждой части своё обстоятельство места. Значит, общего второстепенного члена нет. Нужен ли знак?' },
         { id:'e4', n:4, before:'Жильцы писали и в администрацию', printed:',', edit:'added', after:'и в газету.', need:true, skill:'16-povtor',
           fixed:'Жильцы писали и в администрацию, и в газету.',
           explain:'Однородные члены соединены повторяющимся союзом «и… и…» — запятая между ними нужна. Редактор прав.',
@@ -1701,10 +1705,10 @@ V16.EPISODES.e3 = {
              opts:[{w:'трéбует',l:'е'},{w:'трибýна',l:'и'},{w:'требовáние',l:'е'}],
              explain:'Проверочное слово — «трéбует». В «требовáнии» гласная безударная, «трибуна» — другой корень.',
              h1:'Проверочное слово должно быть однокоренным, а нужная гласная в нём — под ударением.', h3:'Ищи однокоренное слово с ударением на первую гласную корня.' },
-        b3:{ pre:'н',    post:'сущих',   a:'о', correct:2, skill:'9-prov',
-             opts:[{w:'носúльщик',l:'о'},{w:'нестú',l:'е'},{w:'нóсит',l:'о'}],
-             explain:'Проверочное слово — «нóсит». В «носильщике» гласная безударная, «нести» — другое чередование.',
-             h1:'Проверочное слово должно быть однокоренным, а нужная гласная в нём — под ударением.', h3:'В каком из слов ударение падает на корень?' }
+        b3:{ pre:'н',    post:'сущих',   a:'е', correct:1, skill:'9-prov',
+             opts:[{w:'нóсит',l:'о'},{w:'нёс',l:'е'},{w:'носúльщик',l:'о'}],
+             explain:'Проверочное слово — «нёс»: под ударением Ё, значит в корне пишется Е. «Носит» и «носильщик» — другой корень.',
+             h1:'Проверочное слово должно быть однокоренным, а нужная гласная в нём — под ударением.', h3:'Ищи однокоренное слово, где под ударением окажется Ё.' }
       },
       quote:'Заключение 2011 года: «выявлены дефекты, требующие текущего и капитального ремонта. Признаков аварийного состояния несущих конструкций не обнаружено. Дальнейшая эксплуатация возможна»'
     },
@@ -2527,7 +2531,7 @@ E.checkTranscript = function(task, input){
   }
   // знак в конце всей записи
   const tFinal=markOf(T.gaps[T.words.length]), uFinal=markOf(U.gaps[U.words.length]);
-  if(tFinal && tFinal!==',' && tFinal!==uFinal && t2u[T.words.length-1]===U.words.length-1)
+  if(tFinal && tFinal!==',' && uFinal && tFinal!==uFinal && t2u[T.words.length-1]===U.words.length-1)   // пропущенный знак в самом конце не считаем ошибкой
     recIssue('rec:end', U.words.length-1, tFinal, uFinal, 'Знак в конце предложения');
   const ord={listen:0,rec:1,n16:1,n9:2};
   issues.sort((x,y)=>(ord[x.kind]-ord[y.kind])||((x.u??x.t??0)-(y.u??y.t??0)));
@@ -2721,7 +2725,7 @@ T.choice = {
       return `<span class="wd ${o.hl===id?'hl':''}">${esc(b.pre)}<span class="gap-slot">${esc(ans[id]||'_')}</span>${esc(b.post)}<span class="pick">${b.opts.map(l=>`<button type="button" data-b="${id}" data-l="${l}" aria-pressed="${ans[id]===l}">${l}</button>`).join('')}</span></span>`; });
     const rules=Object.entries(task.rules||{}).map(([rid,r])=>`<div class="card-box" style="margin-top:14px;background:rgba(0,0,0,.05);border-color:#BDB29A;color:var(--ink)">
       <div class="label" style="color:var(--ink-muted)">${esc(r.q)}</div>
-      <div class="qopts">${r.options.map((op,i)=>`<button type="button" class="qopt ${o.hl===rid?'hl':''}" data-r="${rid}" data-i="${i}" aria-pressed="${ans[rid]===i}" style="background:rgba(255,255,255,.5);color:var(--ink);border-color:#BDB29A">${esc(op)}</button>`).join('')}</div></div>`).join('');
+      <div class="qopts">${r.options.map((op,i)=>`<button type="button" class="qopt lite ${o.hl===rid?'hl':''}" data-r="${rid}" data-i="${i}" aria-pressed="${ans[rid]===i}">${esc(op)}</button>`).join('')}</div></div>`).join('');
     el.innerHTML=`<div class="${task.hand?'hand':'doctext'}">${text}</div>${rules}`;
     el.querySelectorAll('.pick button').forEach(b=>b.onclick=()=>{ ans[b.dataset.b]=b.dataset.l; T.choice.render(task,el,ans,o); o.onChange(); });
     el.querySelectorAll('.qopt').forEach(b=>b.onclick=()=>{ ans[b.dataset.r]=+b.dataset.i; T.choice.render(task,el,ans,o); o.onChange(); });
@@ -2748,7 +2752,7 @@ T.probe = {
       return `<span class="wd ${o.hl===id?'hl':''}">${esc(b.pre)}<span class="gap-slot">${esc(ch)}</span>${esc(b.post)}</span>`; });
     const list=Object.entries(task.blanks).map(([id,b])=>`<div class="probe">
       <div class="w" style="color:var(--ink)">${esc(b.pre)}<span class="gap-slot">${ans[id]!=null?esc(b.opts[ans[id]].l):'_'}</span>${esc(b.post)} <span class="label" style="color:var(--ink-muted)">проверочное слово:</span></div>
-      <div class="row">${b.opts.map((op,i)=>`<button type="button" class="qopt" data-b="${id}" data-i="${i}" aria-pressed="${ans[id]===i}" style="background:rgba(255,255,255,.5);color:var(--ink);border-color:#BDB29A">${esc(op.w)}</button>`).join('')}</div></div>`).join('');
+      <div class="row">${b.opts.map((op,i)=>`<button type="button" class="qopt lite" data-b="${id}" data-i="${i}" aria-pressed="${ans[id]===i}">${esc(op.w)}</button>`).join('')}</div></div>`).join('');
     el.innerHTML=`<div class="${task.hand?'hand':'doctext'}">${text}</div><div style="margin-top:14px">${list}</div>`;
     el.querySelectorAll('.qopt').forEach(b=>b.onclick=()=>{ ans[b.dataset.b]=+b.dataset.i; T.probe.render(task,el,ans,o); o.onChange(); });
   },
@@ -2894,8 +2898,8 @@ const paras = (text, fn) => text.split('\n\n').map(p=>`<p style="margin:0 0 12px
 T.proof = {
   render(task, el, ans, o){
     el.innerHTML=`<div class="doctext">${paras(task.text, id=>{ const v=ans[id];
-      return `<button type="button" class="slot ${v===true?'on':v===false?'off':''} ${o.hl===id?'hl':''}" data-k="${id}" aria-label="Место для знака: ${v===true?'запятая':v===false?'без знака':'не решено'}">${v===true?',':v===false?'·':'?'}</button>`; })}</div>
-      <p class="mono" style="color:var(--ink-muted)">Нажатие: «?» → «,» → «·» (без знака) → «,»</p>`;
+      return `<button type="button" class="slot ${v===true?'on':v===false?'off':''} ${o.hl===id?'hl':''}" data-k="${id}" aria-label="Место для знака: ${v===true?'запятая':v===false?'без знака':'не решено'}">${v===true?',':v===false?'':'?'}</button>`; })}</div>
+      <p class="mono" style="color:var(--ink-muted)">Нажатие: «?» → «,» → пусто (знак не нужен) → «,»</p>`;
     el.querySelectorAll('.slot').forEach(b=>b.onclick=()=>{ const k=b.dataset.k; ans[k] = ans[k]===true ? false : true; T.proof.render(task,el,ans,o); o.onChange(); });
   },
   ready:(task,ans)=>Object.keys(task.slots).every(k=>ans[k]!=null),
@@ -2916,7 +2920,7 @@ T.proof = {
 };
 
 /* ---------- sort: определи тип орфограммы и выбери букву ---------- */
-const RULES = [['prov','Проверяемая'],['slovar','Словарная'],['cher','Чередование']];
+const RULES = [['prov','Проверяемая'],['slovar','Словарное слово'],['cher','Чередование']];
 T.sort = {
   render(task, el, ans, o){
     const text=paras(task.text, id=>{ const w=task.words[id]; const a=ans[id]||{};
@@ -3424,7 +3428,7 @@ function fragmentScene(o, cfg){
 E.VIEWS.scene_tape = function(o){
   fragmentScene(o, {
     stateKey:'tapeFrag', noHiss:false, endText:'конец фрагмента',
-    lockedText:'Сначала прослушай фрагмент. Субтитров у старой кассеты нет — только твоя запись.',
+    lockedText:'Расшифруй кассету, запиши прослушанную информацию. Нажми «Воспроизвести».',
     label:t=>`Аудиокассета · сторона ${t.side||'А'} · запись 2016 года`,
     stage:(t,played)=>`<div class="deck" id="deck">
       <div class="deck-win"><div class="cass"><div class="lbl">НЕ СТИРАТЬ<small>сторона ${esc(t.side||'А')}</small></div><div class="reel l"></div><div class="reel r"></div></div></div>
@@ -3955,6 +3959,10 @@ E.VIEWS.vypusk = function(){
       </article>
 
       ${E.finaleCard?E.finaleCard():''}
+
+      <article class="vyp-sec"><h3>Заметки ведущего</h3><p class="mono">Черновые мысли к выпуску. В эфир не идут.</p>
+        <div class="notegrid">${list.map(ep=>`<label class="label" for="note-${ep}">${esc(V16.EPISODES[ep].short)}</label><textarea class="notes" id="note-${ep}" data-note="${ep}" placeholder="Что сказать в начале выпуска? Кого ещё спросить?">${esc(E.S.notes[ep]||'')}</textarea>`).join('')}</div>
+      </article>
     </div>
 
     <aside class="aside">
@@ -3962,9 +3970,6 @@ E.VIEWS.vypusk = function(){
         <p>${keyMats.length?`Из найденных ключевых материалов подтверждено ${keyOk.length} из ${keyMats.length}.`:'Ключевые материалы появятся здесь, когда будут найдены.'}</p>
         ${keyBad.length?`<p class="mono" style="color:var(--ink-muted)">Нельзя использовать: ${keyBad.map(k=>'«'+esc(k.d.title)+'»').join(', ')}.</p>`:''}</div>
       <div class="box"><h3>Открытые вопросы</h3>${questions.length?`<ul class="qs">${questions.map(x=>`<li>${esc(x.q)} <span class="mono">${esc(V16.EPISODES[x.ep].short)}</span></li>`).join('')}</ul>`:'<p class="mono">Появятся, когда версия дела будет зафиксирована.</p>'}</div>
-      <div class="box"><h3>Заметки ведущего</h3>
-        ${list.map(ep=>`<label class="label" for="note-${ep}">${esc(V16.EPISODES[ep].short)}</label><textarea class="notes" id="note-${ep}" data-note="${ep}" placeholder="Что сказать в начале выпуска? Кого ещё спросить?">${esc(E.S.notes[ep]||'')}</textarea>`).join('')}
-      </div>
     </aside>
   </section>`;
 
